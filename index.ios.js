@@ -2,26 +2,27 @@
 import React, { Component } from 'react';
 import { AppRegistry, Text, View, StyleSheet } from 'react-native'
 import { DayItem } from './src/day-item'
-
-const DAYS =
-  ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+import Moment from 'moment'
 
 class Weekdays extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>
-          Days of the Week
-        </Text>
         {this.days()}
       </View>
     )
   }
 
   days() {
-    return DAYS.map((day) => {
-      return(<DayItem day={day} />)
-    })
+    const dayItems = []
+    for (var i = 0; i < 7; i++) {
+      const day = Moment().add(i, 'days').format('dddd')
+      dayItems.push(
+        <DayItem day={day} daysUntil={i} key={i} />
+      )
+    }
+
+    return dayItems
   }
 }
 
