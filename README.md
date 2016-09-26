@@ -4,3 +4,4 @@
 ![Days of the Week](./days_of_the_week.png)
 
 - Exercise 2: Stopwatch App
+![Stopwatch]('./stopwatch.gif')
