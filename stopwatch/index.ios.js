@@ -1,24 +1,38 @@
 import React, { Component } from 'react'
-import { View, Text, AppRegistry, StyleSheet } from 'react-native'
+import {
+  View,
+  Text,
+  AppRegistry,
+  StyleSheet,
+  TouchableHighlight
+} from 'react-native'
+import formatTime from 'minutes-seconds-milliseconds'
 
 class StopWatch extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      timeElapsed: null
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
 
-        <View style={[styles.header, this.border('yellow')]}>
-          <View style={this.border('red')}>
-            <Text>
-              00:00:00
+        <View style={styles.header}>
+          <View style={styles.timerWrapper}>
+            <Text style={styles.timer}>
+              {formatTime(this.state.timeElapsed)}
             </Text>
           </View>
-          <View style={this.border('green')}>
+          <View style={styles.buttonWrapper}>
             { this.startStopButton() }
             { this.lapButton() }
           </View>
         </View>
 
-        <View style={[styles.footer, this.border('blue')]}>
+        <View style={styles.footer}>
           <Text>
             I am a list of laps
           </Text>
@@ -30,21 +44,37 @@ class StopWatch extends Component {
 
   startStopButton() {
     return(
-      <View>
+      <TouchableHighlight
+        style={[styles.button, styles.startButton]}
+        underlayColor="gray"
+        onPress={this.handleStartPress.bind(this)}
+      >
         <Text>
-          Start
+          Start Button
         </Text>
-      </View>
+      </TouchableHighlight>
     )
+  }
+
+  handleStartPress() {
+    const startTime = new Date()
+
+    setInterval(() => {
+      this.setState({
+        timeElapsed: new Date() - startTime
+      })
+    }, 30)
   }
 
   lapButton() {
     return(
-      <View>
+      <TouchableHighlight
+      style={styles.button}
+      >
         <Text>
           Lap
         </Text>
-      </View>
+      </TouchableHighlight>
     )
   }
 
@@ -69,6 +99,31 @@ const styles = StyleSheet.create({
 
   footer: { //blue
     flex: 1
+  },
+  timerWrapper: { //red
+    flex: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonWrapper: { //green
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  timer: {
+    fontSize: 60
+  },
+  button: {
+    borderWidth: 2,
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  startButton: {
+    borderColor: '#00CC00'
   }
 })
 
