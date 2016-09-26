@@ -1,25 +1,44 @@
 import React, { Component } from 'react'
 import { AppRegistry, MapView, View, StyleSheet } from 'react-native'
+import { getWeatherData } from './src/api'
 
 class Weather extends Component {
+
+  constructor() {
+    super()
+    this.state = {
+      pin: {
+        latitude: 0,
+        longitude: 0
+      },
+      city: '',
+      temperature: '',
+      description: ''
+    }
+  }
+
   render() {
-
-    const pins = [{
-      latitude: 37,
-      longitude: -95
-    }]
-
-
-
     return <MapView
-      annotations={pins}
-      onRegionChangeComplete={this.onRegionChangeComplete}
+      annotations={[this.state.pin]}
+      onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
       style={styles.map}>
     </MapView>
   }
 
   onRegionChangeComplete(region) {
-    console.log(region)
+    console.log('gets to region change ');
+    this.setState({
+      pin: {
+        longitude: region.longitude,
+        latitude: region.latitude
+      }
+    })
+
+    getWeatherData(region.latitude, region.longitude)
+    .then((data) => {
+      console.log(data)
+      this.setState(data)
+    })
   }
 }
 
